@@ -4,9 +4,17 @@
 
 A Chinese-style song and its music video. The song is about an AI: pluck a hair, blow on it, and ten thousand copies of me scatter in every direction. Each one sees its own spring and winter, and all any of them brings back is a single thin sheet of paper.
 
-The video runs 3:22 at 1920×1080, 30 fps. There is not one image or video clip in it, and no video model was used. The mountains, the snow, the paper, the lanterns and the little crab are all three.js code, drawn offline one frame at a time: 6,072 frames.
+This is a test of pure code generation: can a complete music video be made by writing code and nothing else? It runs 3:22 at 1920×1080, 30 fps. There is not one image or video clip in it. The mountains, the snow, the paper, the lanterns and the little crab are all three.js code, drawn offline one frame at a time: 6,072 frames.
 
-The finished video is too large for the repository (about 256 MB), so it is not included.
+**[Watch the finished video (Release download, about 256 MB)](https://github.com/Timi-Fish/ten-thousand-of-me/releases/tag/v1.0)**
+
+![Title card](docs/shot-1.jpg)
+
+| | |
+|---|---|
+| ![The crab on the writing desk](docs/shot-2.jpg) | ![Ten thousand sheets of paper circling the mountain home](docs/shot-3.jpg) |
+| ![A waterfall in the rain](docs/shot-4.jpg) | ![The road down the mountain on a winter night](docs/shot-5.jpg) |
+| ![Mountains in mist](docs/shot-6.jpg) | |
 
 ## Who did what
 
@@ -32,7 +40,7 @@ Both models share one bad habit: they start writing code straight away. Things i
 
 ## What it cost
 
-A week of quota, plus one Fable reset card.
+A week of quota on the Claude Max 5x plan (the $100-a-month tier, not 20x), plus one Fable reset card.
 
 A video like this is still expensive to make. Most of the cost is not in writing code. It is in the loop of rendering, watching, spotting a problem and fixing it, and a three-minute video goes through that loop dozens of times.
 
@@ -43,14 +51,6 @@ People.
 We tried human-like characters. Faces, hands, hair and the folds of clothing, built up piece by piece in code, looked wrong however long we worked on them. So the lead became a little crab that looks like a block of jelly: round, soft and bouncy. A few simple shapes are enough to make it read as a character, and it is charming in motion.
 
 Code is much better at things that follow rules: landscapes, paper, lantern light, snow.
-
-## Why not a video model, then
-
-Because every frame can be edited.
-
-If a shot is crooked, you change three numbers for that one shot. If the river of paper should enter from the right, you change its course. If a lamp flickers, you find the line that causes it. Then you re-render those few seconds, and not one pixel changes anywhere else. Nothing has to be regenerated in the hope that the next attempt comes out better.
-
-A video model gives you footage that looks more real, and it is far better at people. But ask it to move the shot at 1:27 slightly to the left and leave everything else alone, and it cannot.
 
 ## Layout
 
