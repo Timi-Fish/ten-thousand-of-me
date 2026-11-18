@@ -40,7 +40,7 @@ Both models share one bad habit: they start writing code straight away. Things i
 
 ## What it cost
 
-A week of quota, plus one Fable reset card.
+A week of quota on the Claude Max 5x plan (the $100-a-month tier, not 20x), plus one Fable reset card.
 
 A video like this is still expensive to make. Most of the cost is not in writing code. It is in the loop of rendering, watching, spotting a problem and fixing it, and a three-minute video goes through that loop dozens of times.
 
