@@ -1,6 +1,7 @@
 # 只收《一万个我》的源码、渲染脚本和成品歌曲；其余一律不进仓库
 /*
 !/.gitignore
+!/LICENSE
 !/README.md
 !/README.en.md
 !/docs/
