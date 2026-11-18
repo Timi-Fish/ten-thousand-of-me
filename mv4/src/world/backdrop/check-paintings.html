@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>画心检查</title>
+<script type="importmap">
+  { "imports": { "three": "/render/node_modules/three/build/three.module.js", "three/addons/": "/render/node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body style="margin:0;background:#222">
+<canvas id="stage" width="1920" height="1080"></canvas>
+<script type="module">
+// 背景模块自用的检查页：不经过三维场景和灯光，直接把四幅画心平铺出来看；另外能数出本模块的三角形数。
+// 出图：MV_LOG=1 MV_HTTP_PATH=mv4/src/world/backdrop/check-paintings.html node render/render.mjs still <输出目录> 0 1 2 3 4
+// renderFrame(0)：四幅全幅并排；1–4：某一幅的上半、下半原大和全幅；10–13：柳、点叶树、花树、寒树各换 8 个随机种子的样张
+// （10.08 是从第 9 个种子起）；20：单独装一遍背景模块，打印搭建耗时和三角形数
+import * as THREE from 'three';
+import { SCREEN } from '../layout.js';
+import { build } from '../backdrop.js';
+import { paintSeasons } from './paintings.js';
+import { Scroll } from './scroll.js';
+import { stream } from './util.js';
+import * as flora from './flora.js';
+const g = document.getElementById('stage').getContext('2d'), t0 = performance.now(), sheets = paintSeasons(SCREEN.panels);
+console.log(`四幅画用了 ${Math.round(performance.now() - t0)} 毫秒`);
+const TREES = [
+  (S, s, x) => flora.willow(S, stream(s), x, 900, 540, { lean: .2, wind: .17, strands: 1.5 }),
+  (S, s, x) => flora.leafTree(S, stream(s), x, 900, 400, { palette: { wash: [226, 126, 74], mid: [204, 82, 48], dark: [118, 40, 34], accent: [240, 176, 66] }, density: 1.3 }),
+  (S, s, x) => flora.blossomTree(S, stream(s), x, 900, 300, { petals: [[240, 168, 178], [246, 200, 204], [232, 138, 156]] }),
+  (S, s, x) => flora.bareTree(S, stream(s), x, 900, 330, { snow: true }),
+];
+function measure() {
+  const scene = new THREE.Scene(), started = performance.now();
+  build(scene, { renderer: new THREE.WebGLRenderer({ canvas: document.createElement('canvas') }) });
+  let triangles = 0, meshes = 0;
+  scene.traverse(o => { if (!o.isMesh) return; const geo = o.geometry, n = (geo.index ? geo.index.count : geo.attributes.position.count) / 3; triangles += n * (o.isInstancedMesh ? o.count : 1); meshes++; });
+  console.log(`背景模块：搭建 ${Math.round(performance.now() - started)} 毫秒，${meshes} 个网格，${Math.round(triangles)} 个三角形`);
+}
+window.renderFrame = t => {
+  const k = Math.floor(t);
+  g.fillStyle = '#222'; g.fillRect(0, 0, 1920, 1080);
+  if (k === 0) sheets.forEach((c, i) => g.drawImage(c, 60 + i * 460, 0, 308, 1080));
+  else if (k <= 4) { const c = sheets[k - 1]; g.drawImage(c, 0, 0, 584, 1024, 20, 28, 584, 1024); g.drawImage(c, 0, 1024, 584, 1024, 640, 28, 584, 1024); g.drawImage(c, 1300, 0, 308, 1080); }
+  else if (k === 20) measure();
+  else {
+    const first = Math.round((t - k) * 100);
+    for (let row = 0; row < 2; row++) { const S = new Scroll(1920, 1000); for (let i = 0; i < 4; i++) TREES[k - 10](S, first + row * 4 + i + 1, 240 + i * 480); g.drawImage(S.canvas, 0, 0, 1920, 1000, 0, row * 540, 1037, 540); }
+  }
+};
+window.mvReady = true;
+</script>
+</body>
+</html>
